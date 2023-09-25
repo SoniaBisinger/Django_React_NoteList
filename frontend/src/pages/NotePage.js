@@ -4,7 +4,7 @@ import { ReactComponent as LeftArrow } from "../assets/left_arrow.svg";
 
 const NotePage = () => {
   let { noteId } = useParams();
-  let [note, setNote] = useState({});
+  let [note, setNote] = useState(null);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -12,12 +12,10 @@ const NotePage = () => {
   }, [noteId]);
 
   let getNote = async () => {
-    if (noteId === "new") {
-      setNote({});
-    }
+    if (noteId === "new") return;
 
-    const response = await fetch(`/api/notes/${noteId}`);
-    const data = await response.json();
+    let response = await fetch(`/api/notes/${noteId}`);
+    let data = await response.json();
     setNote(data);
   };
 
@@ -29,7 +27,6 @@ const NotePage = () => {
       },
       body: JSON.stringify(note),
     });
-    setNote({});
   };
 
   let handleSubmit = () => {
@@ -37,12 +34,15 @@ const NotePage = () => {
       deleteNote();
     } else if (noteId !== "new") {
       updateNote();
-    } else if (noteId === "new" && note.body) {
+    } else if (noteId === "new" && note.body !== null) {
       createNote();
     }
-    setNote({});
     navigate("/");
   };
+
+  let handleChange = (value) => {
+    setNote(note => ({ ...note, body: value }));
+  }
 
   let deleteNote = async () => {
     fetch(`/api/notes/${noteId}/`, {
@@ -55,14 +55,13 @@ const NotePage = () => {
   };
 
   let createNote = async () => {
-      fetch(`/api/notes/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(note),
-      });
-      navigate("/");
+    fetch(`/api/notes/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(note),
+    });
   };
 
   return (
@@ -78,15 +77,9 @@ const NotePage = () => {
         )}
       </div>
       <textarea
-        onInput={(e) => {
-          setNote({ ...note, body: e.target.value });
-        }}
-        onBlur={() => {
-          if (noteId !== "new" && note.body === "") {
-            deleteNote();
-          }
-        }}
-        defaultValue={note?.body}
+        onChange={(e) => handleChange(e.target.value)}
+        value={note?.body}
+        placeholder="Enter your note here..."
       ></textarea>
     </div>
   );

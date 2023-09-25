@@ -10,7 +10,7 @@ const NotesListPage = () => {
     const data = await response.json();
     setNotes(data);
   };
-  
+
   useEffect(() => {
     getNotes();
   }, []);
@@ -18,8 +18,8 @@ const NotesListPage = () => {
   return (
     <div className="notes">
       <div className="notes-header">
-        <h2>&#9782;</h2>
-        <p className="note-count">{notes.length} notes</p>
+        <h2 className="notes-title">&#9782; Notes</h2>
+        <p className="notes-count">{notes.length} notes</p>
       </div>
 
       <div className="notes-list">
