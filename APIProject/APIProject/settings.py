@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-d(x3b$94cyhs6+01q28ryxnje-6g7bism*)ya+-n+8wm9&ok58'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1','.vercel.app']
+ALLOWED_HOSTS = ['127.0.0.1','.vercel.app', 'now.sh', 'localhost']
 
 
 # Application definition
@@ -79,14 +79,24 @@ WSGI_APPLICATION = 'vercel_app.wsgi.app'
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+# Vercel doesn't support sqlite3
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '06MnpnhjEynpzpa3Yq6h',
+        'HOST': 'containers-us-west-176.railway.app',
+        'PORT': '6015',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -126,7 +136,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS=[
     BASE_DIR / '../frontend/build/static'
 ]
-# STATIC_ROOT = BASE_DIR / 'static'
+
+# for Vercel 
+STATIC_ROOT = BASE_DIR / 'static' / 'staticfiles_build'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
