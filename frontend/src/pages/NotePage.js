@@ -41,7 +41,8 @@ const NotePage = () => {
   };
 
   let handleChange = (value) => {
-    setNote(note => ({ ...note, body: value }));
+    const title = value.slice(0, 30).split("\n").shift();
+    setNote(note => ({ ...note, title, body: value }));
   }
 
   let deleteNote = async () => {
@@ -62,6 +63,11 @@ const NotePage = () => {
       },
       body: JSON.stringify(note),
     });
+      // let title = note.body.split("\n")[0];
+      //   if (title.length > 30) {
+      //     title = title.slice(0, 30);
+      //   }
+      // return title;
   };
 
   return (
