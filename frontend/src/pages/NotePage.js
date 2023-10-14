@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Cookies from "js-cookie"
 import { ReactComponent as LeftArrow } from "../assets/left_arrow.svg";
 import { useNoteList } from "../components/NoteListProvider";
 
@@ -8,6 +9,7 @@ const NotePage = () => {
   let [note, setNote] = useState(null);
   let navigate = useNavigate();
 
+  const csrf = Cookies.get("csrftoken");
   const { addNote, updateNote: updateNoteInList, removeNote } = useNoteList();
 
   useEffect(() => {
@@ -27,6 +29,7 @@ const NotePage = () => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
       },
       body: JSON.stringify(note),
     });
@@ -55,6 +58,7 @@ const NotePage = () => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
       },
     });
   };
@@ -64,6 +68,7 @@ const NotePage = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-CSRFToken": csrf,
       },
       body: JSON.stringify(note),
     });
