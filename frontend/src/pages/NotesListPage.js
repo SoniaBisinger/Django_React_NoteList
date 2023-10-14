@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ListItem from "../components/ListItem";
 import AddButton from "../components/AddButton";
+import { useNoteList } from "../components/NoteListProvider";
 
 const NotesListPage = () => {
-  let [notes, setNotes] = useState([]);
-
-  const getNotes = async () => {
-    const response = await fetch("/api/notes/");
-    const data = await response.json();
-    setNotes(data);
-  };
-
-  useEffect(() => {
-    getNotes();
-  }, []);
+  const { notes } = useNoteList();
 
   return (
     <div className="notes">

@@ -4,16 +4,19 @@ import NotesListPage from "./pages/NotesListPage";
 import "./App.css";
 
 import { Routes, Route } from "react-router-dom";
+import { NoteListProvider } from "./components/NoteListProvider";
 
 function App() {
   return (
     <div className="container dark">
       <div className="app">
         <Header />
-        <Routes>
-          <Route path="/" exact element={<NotesListPage />} />
-          <Route path="/note/:noteId" element={<NotePage />} />
-        </Routes>
+        <NoteListProvider>
+          <Routes>
+            <Route path="/" exact element={<NotesListPage />} />
+            <Route path="/note/:noteId" element={<NotePage />} />
+          </Routes>
+        </NoteListProvider>
       </div>
     </div>
   );

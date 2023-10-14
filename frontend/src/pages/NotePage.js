@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ReactComponent as LeftArrow } from "../assets/left_arrow.svg";
+import { useNoteList } from "../components/NoteListProvider";
 
 const NotePage = () => {
   let { noteId } = useParams();
   let [note, setNote] = useState(null);
   let navigate = useNavigate();
+
+  const { addNote, updateNote: updateNoteInList, removeNote } = useNoteList();
 
   useEffect(() => {
     getNote();
@@ -20,13 +23,14 @@ const NotePage = () => {
   };
 
   let updateNote = async () => {
-    fetch(`/api/notes/${noteId}/`, {
+    const response = await fetch(`/api/notes/${noteId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(note),
     });
+    updateNoteInList(await response.json());
   };
 
   let handleSubmit = () => {
@@ -42,32 +46,28 @@ const NotePage = () => {
 
   let handleChange = (value) => {
     const title = value.slice(0, 30).split("\n").shift();
-    setNote(note => ({ ...note, title, body: value }));
-  }
+    setNote((note) => ({ ...note, title, body: value }));
+  };
 
   let deleteNote = async () => {
-    fetch(`/api/notes/${noteId}/`, {
+    removeNote(noteId);
+    await fetch(`/api/notes/${noteId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
     });
-    navigate("/");
   };
 
   let createNote = async () => {
-    fetch(`/api/notes/`, {
+    const response = await fetch(`/api/notes/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(note),
     });
-      // let title = note.body.split("\n")[0];
-      //   if (title.length > 30) {
-      //     title = title.slice(0, 30);
-      //   }
-      // return title;
+    addNote(await response.json());
   };
 
   return (
@@ -77,7 +77,14 @@ const NotePage = () => {
           <LeftArrow onClick={handleSubmit} className="back-arrow" />
         </h3>
         {noteId !== "new" ? (
-          <button onClick={deleteNote}>Delete</button>
+          <button
+            onClick={() => {
+              deleteNote();
+              navigate("/");
+            }}
+          >
+            Delete
+          </button>
         ) : (
           <button onClick={handleSubmit}>Done</button>
         )}
