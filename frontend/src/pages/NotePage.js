@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie"
 import { ReactComponent as LeftArrow } from "../assets/left_arrow.svg";
@@ -12,17 +12,16 @@ const NotePage = () => {
   const csrf = Cookies.get("csrftoken");
   const { addNote, updateNote: updateNoteInList, removeNote } = useNoteList();
 
-  useEffect(() => {
-    getNote();
-  }, [noteId]);
-
-  let getNote = async () => {
+  const getNote = useCallback(async () => {
     if (noteId === "new") return;
-
     let response = await fetch(`/api/notes/${noteId}`);
     let data = await response.json();
     setNote(data);
-  };
+  }, [noteId]);
+
+  useEffect(() => {
+    getNote();
+  }, [noteId, getNote]);
 
   let updateNote = async () => {
     const response = await fetch(`/api/notes/${noteId}`, {
