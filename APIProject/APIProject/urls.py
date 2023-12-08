@@ -25,7 +25,7 @@ import os
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('', TemplateView.as_view(template_name=os.path.join(settings.BASE_DIR, '../frontend/build/index.html'))),
+    path('', TemplateView.as_view(template_name=os.path.join(settings.BASE_DIR, 'frontend/build/index.html'))),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -19,7 +19,8 @@ environ.Env.read_env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parents[2]
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -66,7 +67,7 @@ ROOT_URLCONF = 'APIProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / '../frontend/build'],
+        'DIRS': [BASE_DIR / 'frontend/build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,12 +139,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '../frontend/build/static'),
+    os.path.join(BASE_DIR, 'frontend/build/static'),
 ]
 print("---> the base dir: ", BASE_DIR)
 
 # for Vercel
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'APIProject/staticfiles'
 
 
 # Default primary key field type
