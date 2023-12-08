@@ -2,9 +2,16 @@
 
 Petit projet fullstack pour la création d'un block note avec Django en backend et React en frontend.
 
-Pour installer le projet:
+*** Pour installer le projet: ***
 
 pip install -r requirements.txt
 
-démarrer serveur : cd APIProject
-                    python manage.py runserver
+*** démarrer serveur : ***
+cd APIProject
+python manage.py runserver
+
+*** Link Vercel to a project ***
+vercel link
+
+*** Pull .env ***
+vercel env pull .env.development.local
