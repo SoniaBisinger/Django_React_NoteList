@@ -1,6 +1,8 @@
 # Django_React_NoteList
 
-Petit projet fullstack pour la création d'un block note avec Django en backend et React en frontend.
+Petit projet fullstack pour la création d'un block note avec Django en backend et React en frontend, le tout connecté sur :
+
+[localhost:8000](http://localhost:8000/)
 
 *** Pour installer le projet: ***
 
